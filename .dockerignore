@@ -1,0 +1,5 @@
+*.env
+*venv/
+db.sqlite3
+Dockerfile
+docker-compose.yml
