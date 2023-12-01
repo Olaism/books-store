@@ -8,7 +8,8 @@
     <h1>Homepage</h1>
     <p>
         {% if user.is_authenticated %}
-            Hello, {{ user.username }}. Please you can <a href="{% url 'account_logout' %}">log-out</a> here.
+            <p><a href="{% url 'book_list' %}">All books</a></p>
+            <p><a href="{% url 'author_list' %}">All authors</a></p>
         {% else %}
             You are not logged in. 
             Please <a href="{% url 'account_login' %}">log-in</a> 

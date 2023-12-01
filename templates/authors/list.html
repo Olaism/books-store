@@ -1,0 +1,9 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ block.super }} - authors{% endblock %}
+
+{% block content %}
+    {% for author in author_list %}
+        <p>{{ author.get_name }}</p>
+    {% endfor %}
+{% endblock content %}

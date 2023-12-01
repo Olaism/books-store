@@ -24,10 +24,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    # Third party
     'allauth',
     'allauth.account',
     'crispy_forms',
     'crispy_bootstrap5',
+    # Local
+    'books.apps.BooksConfig',
     'pages.apps.PagesConfig',
     'users.apps.UsersConfig',
 ]
