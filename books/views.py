@@ -1,3 +1,7 @@
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin
+)
 from django.views import generic
 
 from .models import (
@@ -5,22 +9,26 @@ from .models import (
     Book
 )
 
-class AuthorListView(generic.ListView):
+class AuthorListView(LoginRequiredMixin, generic.ListView):
     model = Author
     template_name = "authors/list.html"
     context_object_name = "author_list"
 
-class AuthorDetailView(generic.DetailView):
+class AuthorDetailView(LoginRequiredMixin, generic.DetailView):
     model = Author
     template_name = "authors/detail.html"
     context_object_name = "author"
 
-class BookListView(generic.ListView):
+class BookListView(LoginRequiredMixin, generic.ListView):
     model = Book
     template_name = "books/list.html"
     context_object_name = "book_list"
 
-class BookDetailView(generic.DetailView):
+class BookDetailView(
+    LoginRequiredMixin, 
+    PermissionRequiredMixin,
+    generic.DetailView):
     model = Book
     template_name = "books/detail.html"
     context_object_name = "book"
+    permission_required = "books.special_status"
