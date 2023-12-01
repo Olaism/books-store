@@ -9,3 +9,4 @@ sqlparse==0.4.4
 typing_extensions==4.8.0
 tzdata==2023.3
 wheel==0.41.3
+django-allauth==0.58.2
