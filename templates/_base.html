@@ -8,6 +8,14 @@
         <title>{% block title %}Books App{% endblock title %}</title>
     </head>
     <body>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} p-3">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% include 'includes/navbar.html' %}
         <div class="container">
             {% block content %}

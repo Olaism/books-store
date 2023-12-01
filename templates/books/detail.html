@@ -8,4 +8,12 @@
         <p><a href="{{ book.author.get_absolute_url }}">{{ book.author.get_name }}</a></p>
         <p>${{ book.price }}</p>
     </div>
+    <ul>
+        <h5>The Reviews:</h5>
+        {% for review in book.reviews.all %}
+            <li>{{ review.review }}</li>
+        {% empty %}
+            <li class="alert alert-info">No review yet!</li>
+        {% endfor %}
+    </ul>
 {% endblock content %}

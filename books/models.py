@@ -1,4 +1,5 @@
 import uuid
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
@@ -37,3 +38,15 @@ class Author(models.Model):
     @property
     def get_name(self):
         return self.last_name + " " + self.first_name
+
+class Review(models.Model):
+    book = models.ForeignKey(Book, related_name='reviews', on_delete=models.CASCADE)
+    review = models.CharField(max_length=255)
+    author = models.ForeignKey(
+        get_user_model(),
+        related_name='reviews',
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.review
