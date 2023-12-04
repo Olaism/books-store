@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     # Local
     'books.apps.BooksConfig',
     'pages.apps.PagesConfig',
+    'subscription.apps.SubscriptionConfig',
     'users.apps.UsersConfig',
 ]
 
