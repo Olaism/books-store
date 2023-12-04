@@ -13,6 +13,16 @@ class Book(models.Model):
     author = models.ForeignKey("Author", related_name="books", on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     cover = models.ImageField(upload_to="covers/", blank=True)
+    plan_type = models.CharField(
+        max_length=2,
+        choices=(
+            ('FR', "FREE"),
+            ('BS', "BASIC"),
+            ('PR', "PREMINUM")
+        ),
+        default='FR'
+    )
+    doc = models.FileField(upload_to="docs/")
 
     class Meta:
         permissions = (

@@ -1,11 +1,27 @@
 {% extends "_base.html" %}
 
+{% load static %}
+
 {% block title %} {{ block.super }} - Books {% endblock title %}
 
 {% block content %}
+<div class="row justify-content-around">
     {% for book in book_list %}
-    <div>
-        <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
-    </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    {% if book.cover %}
+                        <img class="cover-img" src="{{ book.cover.url }}" alt="{{book.title }}">
+                    {% else %}
+                        <img class="cover-img" src="{% static 'img/no_cover.png' %}" alt="{{ book.title }}">
+                    {% endif %}
+                </div>
+                <div class="card-body text-center">
+                    <a class="lead text-secondary" href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+                </div>
+                <button class="btn btn-primary">Read Now</button>
+            </div>
+        </div>
     {% endfor %}
+</div>
 {% endblock content %}
