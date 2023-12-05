@@ -5,6 +5,8 @@ from django.urls import reverse, resolve
 from allauth.account.views import SignupView
 from allauth.account.forms import SignupForm
 
+from .views import ProfileView
+
 User = get_user_model()
 
 class CustomUserTest(TestCase):
@@ -62,3 +64,26 @@ class SignUpPageTest(TestCase):
     def test_contains_html(self):
         self.assertContains(self.response, 'type="email"')
         self.assertContains(self.response, 'type="password', 2)
+
+class LoginRequiredProfilePageTest(TestCase):
+
+    def test_redirection(self):
+        url = reverse('user_profile')
+        login_url = reverse('account_login')
+        response = self.client.get(url)
+        self.assertRedirects(response, f"{login_url}?next={url}")
+
+class ProfilePageTest(TestCase):
+
+    def setUp(self):
+        User.objects.create_user(username="ty", 
+                    email="ty01@mail.com", password="typassword123")
+        self.client.login(email="ty01@mail.com", password="typassword123")
+
+    def test_status_code(self):
+        response = self.client.get(reverse("user_profile"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_resolve_correct_url(self):
+        view = resolve("/profiles/")
+        self.assertEqual(view.func.view_class, ProfileView)
