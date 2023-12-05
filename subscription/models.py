@@ -33,9 +33,9 @@ class Subscription(models.Model):
     user = models.OneToOneField(User, 
         related_name='subscription',
         on_delete=models.CASCADE)
-    date_started = models.DateTimeField()
-    date_ended = models.DateTimeField()
-    ref = models.CharField(max_length=100)
+    date_started = models.DateTimeField(default=timezone.now)
+    date_ended = models.DateTimeField(blank=True)
+    ref = models.CharField(max_length=50, blank=True)
     verified = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
 

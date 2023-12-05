@@ -19,7 +19,11 @@
                 <div class="card-body text-center">
                     <a class="lead text-secondary" href="{{ book.get_absolute_url }}">{{ book.title }}</a>
                 </div>
-                <button class="btn btn-primary">Read Now</button>
+                {% if has_active_subscription %}
+                    <a href="#" class="btn btn-primary">Read Now</a>
+                {% else %}
+                    <a href="#" class="btn btn-primary">Subscribe</a>
+                {% endif %}
             </div>
         </div>
     {% endfor %}
