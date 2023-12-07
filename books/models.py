@@ -18,7 +18,7 @@ class Book(models.Model):
         choices=(
             ('FR', "FREE"),
             ('BS', "BASIC"),
-            ('PR', "PREMINUM")
+            ('PR', "PREMIUM")
         ),
         default='FR'
     )

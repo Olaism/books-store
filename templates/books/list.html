@@ -19,10 +19,14 @@
                 <div class="card-body text-center">
                     <a class="lead text-secondary" href="{{ book.get_absolute_url }}">{{ book.title }}</a>
                 </div>
-                {% if has_active_subscription %}
-                    <a href="#" class="btn btn-primary">Read Now</a>
+                {% if not user_sub_plan and book.plan_type == "FR" %}
+                    <a href="{{ book.get_absolute_url }}" class="btn btn-primary">Read Now</a>
+                {% elif user_plan_type == "premium" %}
+                    <a href="{{ book.get_absolute_url }}" class="btn btn-primary">Read Now</a>
+                {% elif book.plan_type == "FR" or book.plan_type == "BS" and user_plan_type == "basic" %}
+                    <a href="{{ book.get_absolute_url }}" class="btn btn-primary">Read Now</a>
                 {% else %}
-                    <a href="#" class="btn btn-primary">Subscribe</a>
+                    <a href="{% url 'sub_plan_list' %}" class="btn btn-primary">Subscribe</a>
                 {% endif %}
             </div>
         </div>

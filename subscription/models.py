@@ -51,7 +51,7 @@ class Subscription(models.Model):
                      + timezone.timedelta(days=self.subscription_plan.days)
         while not self.ref:
             ref = secrets.token_urlsafe(50)
-            object_with_similar_ref = Subscription.objects.get(ref=ref)
+            object_with_similar_ref = Subscription.objects.filter(ref=ref)
             if not object_with_similar_ref:
                 self.ref = ref
         return super().save(*args, **kwargs)

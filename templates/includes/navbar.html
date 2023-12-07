@@ -4,6 +4,19 @@
       <form class="d-flex" role="search">
         {% if user.is_authenticated %}
             <a href="{% url 'about' %}" class="btn btn-info m-1">About</a>
+            <!-- user details -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ user.email }}
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'account_change_password' %}">Change password</a></li>
+                <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'account_logout' %}">Log-out</a></li>
+              </ul>
+            </div>
             <a href="{% url 'account_logout' %}" class="btn btn-danger m-1">Log out</a>
         {% else %}
             <a href="{% url 'account_signup' %}" class="btn btn-outline-secondary m-1">Sign up</a>
