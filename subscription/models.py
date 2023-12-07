@@ -8,6 +8,10 @@ User = get_user_model()
 
 
 class SubscriptionPlan(models.Model):
+    sub_type = models.CharField(max_length=2, choices=(
+        ("BS", "Basic"),
+        ("PR", "Premium"),
+    ))
     name = models.CharField(max_length=50, unique=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     days = models.PositiveIntegerField(default=30)

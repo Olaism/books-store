@@ -27,14 +27,13 @@ class BookListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        subs = Subscription.objects.filter(user=self.request.user)
+        subs = Subscription.objects.filter(user=self.request.user, verified=True)
         try:
-            user_sub_plan = subs[0]
-            context["user_plan_type"] = user_sub_plan.subscription_plan.name.lower()
+            user_sub = subs[0]
+            user_sub_type = user_sub.subscription_plan.sub_type
         except IndexError:
-            user_sub_plan = None
-        context["user_sub_plan"] = user_sub_plan
-        print(context)
+            user_sub_type = None
+        context["user_sub_type"] = user_sub_type
         return context
 
 class BookDetailView(
@@ -52,9 +51,8 @@ class BookDetailView(
         subs = Subscription.objects.filter(user=user, verified=True)
         if len(subs) == 0:
             return book.plan_type == "FR"
-        sub_type = subs[0].subscription_plan.name.lower()
-        print(sub_type)
-        if sub_type == "basic":
+        sub_type = subs[0].subscription_plan.sub_type
+        if sub_type == "BS":
             return book.plan_type == "FR" or book.plan_type == "BS"
-        return sub_type == "premium"
+        return sub_type == "PR"
 
