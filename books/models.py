@@ -23,11 +23,10 @@ class Book(models.Model):
         default='FR'
     )
     doc = models.FileField(upload_to="docs/")
+    date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        permissions = (
-            ("special_status", "can read all books"),
-        )
+        ordering = ("-date_added",)
 
     def __str__(self):
         return self.title
