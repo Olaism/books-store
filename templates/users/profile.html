@@ -10,9 +10,9 @@
         <div class="col-lg-6 col-md-8 col-sm-10">
             <h3 class="lead mb-3">Profile page</h3>
             <div class="card">
-                <div class="row">
+                <div class="row align-items-center">
                     {% with photo=user.profile_photo %}
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         {% if photo %}
                         <img 
                             src="{{ photo.url }}" 
@@ -27,6 +27,15 @@
                         {% endif %}
                     </div>
                     {% endwith %}
+                    <div class="col-lg-2">
+                        <button class="btn btn-{% if is_subscribed %}info{% else %}danger{% endif %}">
+                            {% if is_subscribed %}
+                                {{ user.subscription.subscription_plan.name }}
+                            {% else %}
+                                FREE USER
+                            {% endif %}
+                        </button>
+                    </div>
                 </div>
                 <form method="POST" enctype="multipart/form-data" class="mx-1 mt-3">
                     {% csrf_token %}
