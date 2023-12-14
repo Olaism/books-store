@@ -10,7 +10,7 @@
                 {{ user.email }}
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'user_profile' %}">Profile</a></li>
                 <li><a class="dropdown-item" href="{% url 'account_change_password' %}">Change password</a></li>
                 <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
                 <li><hr class="dropdown-divider"></li>

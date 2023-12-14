@@ -1,8 +1,40 @@
 {% extends "_base.html" %}
 
+{% load static crispy_forms_tags %}
+
 {% block title %}Profile{% endblock title %}
 
 
 {% block content %}
-    <h3>Profile page</h3>
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <h3 class="lead mb-3">Profile page</h3>
+            <div class="card">
+                <div class="row">
+                    {% with photo=user.profile_photo %}
+                    <div class="col-lg-3">
+                        {% if photo %}
+                        <img 
+                            src="{{ photo.url }}" 
+                            alt="{{ user.email }} profile photo" 
+                            class="img-fluid ml-1 rounded-circle"
+                            style="width: 200px; height: 150px;">
+                        {% else %}
+                        <img 
+                            src="{% static 'img/user_avatar.png' %}" 
+                            alt="{{ user.email }} profile photo" 
+                            class="img-fluid">
+                        {% endif %}
+                    </div>
+                    {% endwith %}
+                </div>
+                <form method="POST" enctype="multipart/form-data" class="mx-1 mt-3">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button class="btn btn-primary">Update</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
 {% endblock content %}

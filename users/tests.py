@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.forms import ModelForm
 from django.test import TestCase
 from django.urls import reverse, resolve
 
@@ -73,17 +74,75 @@ class LoginRequiredProfilePageTest(TestCase):
         response = self.client.get(url)
         self.assertRedirects(response, f"{login_url}?next={url}")
 
-class ProfilePageTest(TestCase):
+class ProfileTestCase(TestCase):
 
     def setUp(self):
-        User.objects.create_user(username="ty", 
+        self.user = User.objects.create_user(username="ty", 
                     email="ty01@mail.com", password="typassword123")
         self.client.login(email="ty01@mail.com", password="typassword123")
+        self.url = reverse("user_profile")
+
+class ProfilePageTest(ProfileTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.response = self.client.get(self.url)
 
     def test_status_code(self):
-        response = self.client.get(reverse("user_profile"))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.response.status_code, 200)
 
     def test_resolve_correct_url(self):
-        view = resolve("/profiles/")
+        view = resolve("/profile/")
         self.assertEqual(view.func.view_class, ProfileView)
+
+    def test_form_instance(self):
+        form = self.response.context.get('form')
+        self.assertIsInstance(form, ModelForm)
+    
+    def test_contain_csrf(self):
+        self.assertContains(self.response, 'csrfmiddlewaretoken')
+
+    def test_form_inputs(self):
+        self.assertContains(self.response, 'type="text"', 3)
+
+    def test_no_profile_photo_display(self):
+        self.assertContains(self.response, '/static/img/user_avatar.png')
+
+    def test_template_used(self):
+        self.assertTemplateUsed(self.response, "users/profile.html")
+        self.assertTemplateUsed(self.response, "_base.html")
+
+class ProfilePagePostTest(ProfileTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.new_username = 'francis01'
+        self.first_name = 'francis'
+        self.last_name = 'ollburg'
+        self.response = self.client.post(self.url, {
+            'username': self.new_username,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+        })
+
+    def test_redirection(self):
+        self.assertRedirects(self.response, reverse('user_profile'))
+
+    def test_user_update(self):
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.username, self.new_username)
+        self.assertEqual(self.user.first_name, self.first_name)
+        self.assertEqual(self.user.last_name, self.last_name)
+
+class ProfilePageInvalidPostTest(ProfileTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.response = self.client.post(self.url, {})
+
+    def test_status_code(self):
+        self.assertEqual(self.response.status_code, 200)
+
+    def test_form_errors(self):
+        form = self.response.context.get('form')
+        self.assertTrue(form.errors)
