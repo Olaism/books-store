@@ -29,6 +29,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'crispy_forms',
     'crispy_bootstrap5',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
     # Local
     'books.apps.BooksConfig',
     'pages.apps.PagesConfig',
@@ -143,13 +147,13 @@ SITE_ID = 1
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_SESSION_REMEMBER = True
 
-ACCOUNT_LOGOUT_ON_GET = True
+# ACCOUNT_LOGOUT_ON_GET = True
 
 ACCOUNT_UNIQUE_EMAIL = True
 
@@ -160,3 +164,16 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "home"
 
 DEFAULT_FROM_EMAIL = "admin@djangobookstore.com"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    )
+}
+
+REST_AUTH = {
+    'REGISTER_SERIALIZER': 'users.api.serializers.CustomRegisterSerializer',
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'my-app-auth',
+    'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
+}
